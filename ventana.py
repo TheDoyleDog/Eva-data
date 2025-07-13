@@ -11,7 +11,6 @@ import sys
 
 # Importar la conexión a MongoDB
 from mongo_connection import MongoConnection
-from pedido_dialog import PedidoDialog, PedidoDetalleDialog
 
 class ClienteDialog(QDialog):
     def __init__(self, cliente_data=None, parent=None):
@@ -45,8 +44,6 @@ class ClienteDialog(QDialog):
         
         # Botones
         self.botones = QDialogButtonBox(QDialogButtonBox.Save | QDialogButtonBox.Cancel)
-        self.botones.button(QDialogButtonBox.Save).setText("Guardar")
-        self.botones.button(QDialogButtonBox.Cancel).setText("Cancelar")
         self.botones.accepted.connect(self.accept)
         self.botones.rejected.connect(self.reject)
         
@@ -99,8 +96,6 @@ class ProductoDialog(QDialog):
         
         # Botones
         self.botones = QDialogButtonBox(QDialogButtonBox.Save | QDialogButtonBox.Cancel)
-        self.botones.button(QDialogButtonBox.Save).setText("Guardar")
-        self.botones.button(QDialogButtonBox.Cancel).setText("Cancelar")
         self.botones.accepted.connect(self.accept)
         self.botones.rejected.connect(self.reject)
         
@@ -248,7 +243,7 @@ class MainApp(QtWidgets.QMainWindow):
             self.tablaProductos.insertRow(fila)
             self.tablaProductos.setItem(fila, 0, QTableWidgetItem(producto.get("nombre", "")))
             self.tablaProductos.setItem(fila, 1, QTableWidgetItem(producto.get("descripcion", "")))
-            self.tablaProductos.setItem(fila, 2, QTableWidgetItem(f"${producto.get('precio', 0):.2f}"))
+            self.tablaProductos.setItem(fila, 2, QTableWidgetItem(f"${producto.get("precio", 0):.2f}"))
             self.tablaProductos.setItem(fila, 3, QTableWidgetItem(str(producto.get("stock", 0))))
             self.tablaProductos.setItem(fila, 4, QTableWidgetItem(producto.get("categoria", "")))
             
@@ -344,26 +339,23 @@ class MainApp(QtWidgets.QMainWindow):
             self.tablaPedidos.setItem(fila, 2, QTableWidgetItem(fecha_str))
             
             self.tablaPedidos.setItem(fila, 3, QTableWidgetItem(pedido.get("estado", "")))
-            self.tablaPedidos.setItem(fila, 4, QTableWidgetItem(f"${pedido.get('total', 0):.2f}"))
+            self.tablaPedidos.setItem(fila, 4, QTableWidgetItem(f"${pedido.get("total", 0):.2f}"))
             
             # Botones de acción
             self.agregar_botones_accion_pedido(fila, str(pedido["_id"]))
     
     def agregar_botones_accion_pedido(self, fila, pedido_id):
         """
-        Agrega botones de ver, editar y eliminar para cada pedido
+        Agrega botones de ver y eliminar para cada pedido
         """
         btnVer = QPushButton("Ver")
         btnVer.clicked.connect(lambda _, id=pedido_id: self.ver_pedido(id))
-        btnEditar = QPushButton("Editar")
-        btnEditar.clicked.connect(lambda _, id=pedido_id: self.editar_pedido(id))
         btnEliminar = QPushButton("Eliminar")
         btnEliminar.clicked.connect(lambda _, id=pedido_id: self.eliminar_pedido(id))
         
         contenedor = QtWidgets.QWidget()
         layout = QtWidgets.QHBoxLayout()
         layout.addWidget(btnVer)
-        layout.addWidget(btnEditar)
         layout.addWidget(btnEliminar)
         layout.setContentsMargins(0, 0, 0, 0)
         contenedor.setLayout(layout)
@@ -372,42 +364,15 @@ class MainApp(QtWidgets.QMainWindow):
     
     def agregar_pedido(self):
         """
-        Abre el diálogo para agregar un nuevo pedido
+        Funcionalidad básica para agregar pedido (simplificada)
         """
-        dialog = PedidoDialog(self.mongo_conn, parent=self)
-        if dialog.exec_() == QDialog.Accepted:
-            datos = dialog.getDatos()
-            if self.mongo_conn.crear_pedido(
-                datos["id_cliente"], datos["productos_pedidos"], 
-                datos["direccion_envio"], datos["estado"], datos["total"]
-            ):
-                self.cargar_pedidos()
-                self.mostrar_mensaje("Éxito", "Pedido agregado correctamente", QMessageBox.Information)
-            else:
-                self.mostrar_mensaje("Error", "No se pudo agregar el pedido", QMessageBox.Critical)
+        self.mostrar_mensaje("Información", "Funcionalidad de agregar pedido en desarrollo", QMessageBox.Information)
     
     def ver_pedido(self, pedido_id):
         """
         Muestra los detalles de un pedido
         """
-        dialog = PedidoDetalleDialog(self.mongo_conn, pedido_id, parent=self)
-        dialog.exec_()
-    
-    def editar_pedido(self, pedido_id):
-        """
-        Abre el diálogo para editar un pedido existente
-        """
-        pedido = self.mongo_conn.obtener_pedido_por_id(pedido_id)
-        
-        if pedido:
-            dialog = PedidoDialog(self.mongo_conn, pedido, parent=self)
-            if dialog.exec_() == QDialog.Accepted:
-                datos = dialog.getDatos()
-                if self.mongo_conn.actualizar_pedido(pedido_id, datos):
-                    self.cargar_pedidos()
-                    self.mostrar_mensaje("Éxito", "Pedido actualizado correctamente", QMessageBox.Information)
-                else:
-                    self.mostrar_mensaje("Error", "No se pudo actualizar el pedido", QMessageBox.Critical)
+        self.mostrar_mensaje("Información", f"Ver detalles del pedido: {pedido_id}", QMessageBox.Information)
     
     def eliminar_pedido(self, pedido_id):
         """

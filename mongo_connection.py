@@ -65,13 +65,6 @@ class MongoConnection:
             logger.error(f"Error al obtener clientes: {e}")
             return []
 
-    def obtener_cliente_por_id(self, cliente_id):
-        try:
-            return self.db.clientes.find_one({"_id": ObjectId(cliente_id)})
-        except Exception as e:
-            logger.error(f"Error al obtener cliente por ID: {e}")
-            return None
-
     def actualizar_cliente(self, cliente_id, datos):
         try:
             result = self.db.clientes.update_one(
@@ -118,13 +111,6 @@ class MongoConnection:
         except Exception as e:
             logger.error(f"Error al obtener productos: {e}")
             return []
-
-    def obtener_producto_por_id(self, producto_id):
-        try:
-            return self.db.productos.find_one({"_id": ObjectId(producto_id)})
-        except Exception as e:
-            logger.error(f"Error al obtener producto por ID: {e}")
-            return None
 
     def actualizar_producto(self, producto_id, datos):
         try:
@@ -182,54 +168,12 @@ class MongoConnection:
                         "path": "$cliente_info",
                         "preserveNullAndEmptyArrays": True
                     }
-                    
-                },
-                {
-                    "$lookup": {
-                        "from": "productos",
-                        "localField": "productos_pedidos.id_producto",
-                        "foreignField": "_id",
-                        "as": "productos_detalles"
-                    }
                 }
             ]))
             return pedidos
         except Exception as e:
             logger.error(f"Error al obtener pedidos: {e}")
             return []
-
-    def obtener_pedido_por_id(self, pedido_id):
-        try:
-            # Realizar un lookup para obtener la información del cliente y productos
-            pedido = list(self.db.pedidos.aggregate([
-                {"$match": {"_id": ObjectId(pedido_id)}},
-                {
-                    "$lookup": {
-                        "from": "clientes",
-                        "localField": "id_cliente",
-                        "foreignField": "_id",
-                        "as": "cliente_info"
-                    }
-                },
-                {
-                    "$unwind": {
-                        "path": "$cliente_info",
-                        "preserveNullAndEmptyArrays": True
-                    }
-                },
-                {
-                    "$lookup": {
-                        "from": "productos",
-                        "localField": "productos_pedidos.id_producto",
-                        "foreignField": "_id",
-                        "as": "productos_detalles"
-                    }
-                }
-            ]))
-            return pedido[0] if pedido else None
-        except Exception as e:
-            logger.error(f"Error al obtener pedido por ID: {e}")
-            return None
 
     def actualizar_pedido(self, pedido_id, datos):
         try:
