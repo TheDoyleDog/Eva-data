@@ -50,14 +50,14 @@
     <item row="4" column="1">
      <widget class="QPushButton" name="btnIngresar">
       <property name="text">
-       <string>INGRESAR</string>
+       <string>Ingresar</string>
       </property>
      </widget>
     </item>
     <item row="4" column="2">
      <widget class="QPushButton" name="btnSalir">
       <property name="text">
-       <string>SALIR</string>
+       <string>Salir</string>
       </property>
      </widget>
     </item>

@@ -41,6 +41,8 @@ class ClienteDialog(QDialog):
         
         # Botones
         self.botones = QDialogButtonBox(QDialogButtonBox.Save | QDialogButtonBox.Cancel)
+        self.botones.button(QDialogButtonBox.Save).setText("Guardar")
+        self.botones.button(QDialogButtonBox.Cancel).setText("Cancelar")
         self.botones.accepted.connect(self.accept)
         self.botones.rejected.connect(self.reject)
         
@@ -93,6 +95,8 @@ class ProductoDialog(QDialog):
         
         # Botones
         self.botones = QDialogButtonBox(QDialogButtonBox.Save | QDialogButtonBox.Cancel)
+        self.botones.button(QDialogButtonBox.Save).setText("Guardar")
+        self.botones.button(QDialogButtonBox.Cancel).setText("Cancelar")
         self.botones.accepted.connect(self.accept)
         self.botones.rejected.connect(self.reject)
         

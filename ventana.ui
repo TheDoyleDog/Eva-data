@@ -6,62 +6,211 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
-    <height>500</height>
+    <width>900</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Listado de Usuarios</string>
+   <string>ComercioTech - Sistema de Gestión</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QPushButton" name="btnAgregar">
-      <property name="text">
-       <string>Agregar Usuario</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QTableWidget" name="tablaUsuarios">
-      <property name="columnCount">
-       <number>5</number>
-      </property>
-      <property name="rowCount">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
        <number>0</number>
       </property>
-      <column>
-       <property name="text">
-        <string>Nombre</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Apellido</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Correo</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Teléfono</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
-        <string>Acciones</string>
-       </property>
-      </column>
+      <widget class="QWidget" name="tabClientes">
+       <attribute name="title">
+        <string>Clientes</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QPushButton" name="btnAgregarCliente">
+          <property name="text">
+           <string>Agregar Cliente</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tablaClientes">
+          <property name="columnCount">
+           <number>6</number>
+          </property>
+          <property name="rowCount">
+           <number>0</number>
+          </property>
+          <column>
+           <property name="text">
+            <string>Nombre</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Email</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Teléfono</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Ciudad</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Fecha Registro</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Acciones</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabProductos">
+       <attribute name="title">
+        <string>Productos</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QPushButton" name="btnAgregarProducto">
+          <property name="text">
+           <string>Agregar Producto</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tablaProductos">
+          <property name="columnCount">
+           <number>6</number>
+          </property>
+          <property name="rowCount">
+           <number>0</number>
+          </property>
+          <column>
+           <property name="text">
+            <string>Nombre</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Descripción</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Precio</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Stock</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Categoría</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Acciones</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabPedidos">
+       <attribute name="title">
+        <string>Pedidos</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <widget class="QPushButton" name="btnAgregarPedido">
+          <property name="text">
+           <string>Agregar Pedido</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tablaPedidos">
+          <property name="columnCount">
+           <number>6</number>
+          </property>
+          <property name="rowCount">
+           <number>0</number>
+          </property>
+          <column>
+           <property name="text">
+            <string>ID Pedido</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Cliente</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Fecha</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Estado</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Total</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Acciones</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>900</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuArchivo">
+    <property name="title">
+     <string>Archivo</string>
+    </property>
+    <addaction name="actionSalir"/>
+   </widget>
+   <addaction name="menuArchivo"/>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSalir">
+   <property name="text">
+    <string>Salir</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
 </ui>
+
