@@ -1,0 +1,30 @@
+
+[
+  {
+    "nombre": "Juan Pérez",
+    "email": "juan.perez@example.com",
+    "telefono": "+56912345678",
+    "direccion": {
+      "calle": "Av. Siempre Viva 123",
+      "ciudad": "Santiago",
+      "provincia": "Santiago",
+      "codigo_postal": "1234567",
+      "pais": "Chile"
+    },
+    "fecha_registro": "2023-01-15T10:00:00Z"
+  },
+  {
+    "nombre": "María González",
+    "email": "maria.gonzalez@example.com",
+    "telefono": "+56987654321",
+    "direccion": {
+      "calle": "Calle Falsa 456",
+      "ciudad": "Valparaíso",
+      "provincia": "Valparaíso",
+      "codigo_postal": "2345678",
+      "pais": "Chile"
+    },
+    "fecha_registro": "2023-02-20T14:30:00Z"
+  }
+]
+

@@ -1,0 +1,28 @@
+
+[
+  {
+    "nombre": "Laptop Gamer",
+    "descripcion": "Potente laptop para juegos con tarjeta gráfica de última generación.",
+    "precio": 1200.00,
+    "stock": 15,
+    "categoria": "Electrónica",
+    "fecha_creacion": "2023-03-10T09:00:00Z"
+  },
+  {
+    "nombre": "Teclado Mecánico RGB",
+    "descripcion": "Teclado con switches mecánicos y retroiluminación RGB personalizable.",
+    "precio": 80.50,
+    "stock": 50,
+    "categoria": "Electrónica",
+    "fecha_creacion": "2023-03-12T11:00:00Z"
+  },
+  {
+    "nombre": "Camiseta de Algodón",
+    "descripcion": "Camiseta 100% algodón, disponible en varias tallas y colores.",
+    "precio": 25.00,
+    "stock": 200,
+    "categoria": "Ropa",
+    "fecha_creacion": "2023-04-01T10:00:00Z"
+  }
+]
+

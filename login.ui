@@ -6,18 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>241</width>
-    <height>211</height>
+    <width>350</width>
+    <height>250</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>241</width>
-    <height>185</height>
+    <width>350</width>
+    <height>250</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>ComercioTech - Login</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_2">
@@ -78,7 +78,7 @@
        </font>
       </property>
       <property name="text">
-       <string>BIENVENIDOS AL SISTEMA</string>
+       <string>COMERCIOTECH</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -109,7 +109,7 @@
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Password</string>
+         <string>Contraseña:</string>
         </property>
        </widget>
       </item>
@@ -166,3 +166,4 @@
  <resources/>
  <connections/>
 </ui>
+
