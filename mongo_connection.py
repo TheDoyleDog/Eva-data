@@ -3,15 +3,14 @@ from bson import ObjectId
 from datetime import datetime
 import logging
 
-# Configurar logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 class MongoConnection:
-    def __init__(self, host='localhost', port=27017, database='comerciotech_db'):
-        """
-        Inicializa la conexión a MongoDB
-        """
+    def __init__(self, host="localhost", port=27017, database="comerciotech_db"):
         self.host = host
         self.port = port
         self.database_name = database
@@ -19,42 +18,30 @@ class MongoConnection:
         self.db = None
         
     def connect(self):
-        """
-        Establece la conexión a MongoDB
-        """
         try:
-            self.client = MongoClient(f'mongodb://{self.host}:{self.port}/')
+            self.client = MongoClient(f"mongodb://{self.host}:{self.port}/")
             self.db = self.client[self.database_name]
             logger.info(f"Conexión exitosa a MongoDB: {self.database_name}")
             return True
         except Exception as e:
             logger.error(f"Error al conectar a MongoDB: {e}")
             return False
-    
+
     def disconnect(self):
-        """
-        Cierra la conexión a MongoDB
-        """
         if self.client:
             self.client.close()
             logger.info("Conexión a MongoDB cerrada")
-    
-    def test_connection(self):
-        """
-        Prueba la conexión a MongoDB
-        """
+
+    def validar_usuario(self, usuario, password):
         try:
-            self.client.admin.command('ping')
-            return True
+            user_data = self.db.usuarios.find_one({"usuario": usuario, "password": password})
+            return user_data is not None
         except Exception as e:
-            logger.error(f"Error en la prueba de conexión: {e}")
+            logger.error(f"Error al validar usuario: {e}")
             return False
-    
-    # OPERACIONES CRUD PARA CLIENTES
+
+    # Operaciones CRUD para Clientes
     def crear_cliente(self, nombre, email, telefono, direccion):
-        """
-        Crea un nuevo cliente en la base de datos
-        """
         try:
             cliente = {
                 "nombre": nombre,
@@ -69,22 +56,16 @@ class MongoConnection:
         except Exception as e:
             logger.error(f"Error al crear cliente: {e}")
             return None
-    
+
     def obtener_clientes(self):
-        """
-        Obtiene todos los clientes de la base de datos
-        """
         try:
             clientes = list(self.db.clientes.find())
             return clientes
         except Exception as e:
             logger.error(f"Error al obtener clientes: {e}")
             return []
-    
+
     def actualizar_cliente(self, cliente_id, datos):
-        """
-        Actualiza un cliente existente
-        """
         try:
             result = self.db.clientes.update_one(
                 {"_id": ObjectId(cliente_id)},
@@ -95,11 +76,8 @@ class MongoConnection:
         except Exception as e:
             logger.error(f"Error al actualizar cliente: {e}")
             return False
-    
+
     def eliminar_cliente(self, cliente_id):
-        """
-        Elimina un cliente de la base de datos
-        """
         try:
             result = self.db.clientes.delete_one({"_id": ObjectId(cliente_id)})
             logger.info(f"Cliente eliminado: {result.deleted_count} documento(s)")
@@ -107,18 +85,15 @@ class MongoConnection:
         except Exception as e:
             logger.error(f"Error al eliminar cliente: {e}")
             return False
-    
-    # OPERACIONES CRUD PARA PRODUCTOS
+
+    # Operaciones CRUD para Productos
     def crear_producto(self, nombre, descripcion, precio, stock, categoria):
-        """
-        Crea un nuevo producto en la base de datos
-        """
         try:
             producto = {
                 "nombre": nombre,
                 "descripcion": descripcion,
-                "precio": float(precio),
-                "stock": int(stock),
+                "precio": precio,
+                "stock": stock,
                 "categoria": categoria,
                 "fecha_creacion": datetime.now()
             }
@@ -128,22 +103,16 @@ class MongoConnection:
         except Exception as e:
             logger.error(f"Error al crear producto: {e}")
             return None
-    
+
     def obtener_productos(self):
-        """
-        Obtiene todos los productos de la base de datos
-        """
         try:
             productos = list(self.db.productos.find())
             return productos
         except Exception as e:
             logger.error(f"Error al obtener productos: {e}")
             return []
-    
+
     def actualizar_producto(self, producto_id, datos):
-        """
-        Actualiza un producto existente
-        """
         try:
             result = self.db.productos.update_one(
                 {"_id": ObjectId(producto_id)},
@@ -154,11 +123,8 @@ class MongoConnection:
         except Exception as e:
             logger.error(f"Error al actualizar producto: {e}")
             return False
-    
+
     def eliminar_producto(self, producto_id):
-        """
-        Elimina un producto de la base de datos
-        """
         try:
             result = self.db.productos.delete_one({"_id": ObjectId(producto_id)})
             logger.info(f"Producto eliminado: {result.deleted_count} documento(s)")
@@ -166,20 +132,15 @@ class MongoConnection:
         except Exception as e:
             logger.error(f"Error al eliminar producto: {e}")
             return False
-    
-    # OPERACIONES CRUD PARA PEDIDOS
-    def crear_pedido(self, id_cliente, productos_pedidos, direccion_envio):
-        """
-        Crea un nuevo pedido en la base de datos
-        """
+
+    # Operaciones CRUD para Pedidos
+    def crear_pedido(self, id_cliente, productos_pedidos, direccion_envio, estado="Pendiente", total=0.0):
         try:
-            total = sum(item['cantidad'] * item['precio_unitario'] for item in productos_pedidos)
-            
             pedido = {
                 "id_cliente": ObjectId(id_cliente),
                 "fecha_pedido": datetime.now(),
-                "estado": "Pendiente",
-                "total": float(total),
+                "estado": estado,
+                "total": total,
                 "productos_pedidos": productos_pedidos,
                 "direccion_envio": direccion_envio
             }
@@ -189,13 +150,11 @@ class MongoConnection:
         except Exception as e:
             logger.error(f"Error al crear pedido: {e}")
             return None
-    
+
     def obtener_pedidos(self):
-        """
-        Obtiene todos los pedidos de la base de datos con información del cliente
-        """
         try:
-            pipeline = [
+            # Realizar un lookup para obtener la información del cliente
+            pedidos = list(self.db.pedidos.aggregate([
                 {
                     "$lookup": {
                         "from": "clientes",
@@ -205,19 +164,18 @@ class MongoConnection:
                     }
                 },
                 {
-                    "$unwind": "$cliente_info"
+                    "$unwind": {
+                        "path": "$cliente_info",
+                        "preserveNullAndEmptyArrays": True
+                    }
                 }
-            ]
-            pedidos = list(self.db.pedidos.aggregate(pipeline))
+            ]))
             return pedidos
         except Exception as e:
             logger.error(f"Error al obtener pedidos: {e}")
             return []
-    
+
     def actualizar_pedido(self, pedido_id, datos):
-        """
-        Actualiza un pedido existente
-        """
         try:
             result = self.db.pedidos.update_one(
                 {"_id": ObjectId(pedido_id)},
@@ -228,11 +186,8 @@ class MongoConnection:
         except Exception as e:
             logger.error(f"Error al actualizar pedido: {e}")
             return False
-    
+
     def eliminar_pedido(self, pedido_id):
-        """
-        Elimina un pedido de la base de datos
-        """
         try:
             result = self.db.pedidos.delete_one({"_id": ObjectId(pedido_id)})
             logger.info(f"Pedido eliminado: {result.deleted_count} documento(s)")
@@ -241,16 +196,4 @@ class MongoConnection:
             logger.error(f"Error al eliminar pedido: {e}")
             return False
 
-    # FUNCIÓN DE VALIDACIÓN DE USUARIO (para login)
-    def validar_usuario(self, usuario, password):
-        """
-        Valida las credenciales de un usuario
-        """
-        try:
-            # Buscar usuario en la colección de usuarios
-            user_data = self.db.usuarios.find_one({"usuario": usuario, "password": password})
-            return user_data is not None
-        except Exception as e:
-            logger.error(f"Error al validar usuario: {e}")
-            return False
 

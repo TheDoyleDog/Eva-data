@@ -1,194 +1,141 @@
-# ComercioTech - Sistema de Gestión
+# ComercioTech - Sistema de Gestión Corregido
 
 ## Descripción
-ComercioTech es una aplicación de escritorio desarrollada con PyQt5 que permite gestionar clientes, productos y pedidos utilizando MongoDB como base de datos no estructurada.
 
-## Requisitos del Sistema
+Esta es la versión corregida del sistema ComercioTech que incluye:
+- Login sin mensajes por terminal
+- Ventana principal con gestión CRUD completa
+- Interfaz con pestañas para Clientes, Productos y Pedidos
+- Operaciones completas de Crear, Leer, Actualizar y Eliminar
 
-### Software Necesario
-- Python 3.7 o superior
-- MongoDB 4.0 o superior
-- MongoDB Compass (opcional, para gestión visual de la base de datos)
+## Archivos Principales
 
-### Dependencias de Python
+### Aplicación
+- `app.py` - Aplicación principal con login
+- `ventana.py` - Ventana principal con interfaz CRUD
+- `login.ui` - Interfaz de login (QtDesigner)
+- `ventana.ui` - Interfaz principal (QtDesigner)
+
+### Conexión a Base de Datos
+- `libreria_mongo.py` - Función de validación de usuario (original)
+- `mongo_connection.py` - Clase completa para operaciones CRUD
+
+### Datos
+- `usuarios.json` - Usuarios del sistema
+- `clientes.json` - Datos de clientes
+- `productos.json` - Datos de productos
+- `pedidos.json` - Datos de pedidos
+
+## Credenciales de Acceso
+
+- **Usuario**: admin | **Contraseña**: admin123
+- **Usuario**: usuario1 | **Contraseña**: pass123
+
+## Instalación y Uso
+
+### 1. Requisitos
 ```bash
 pip install PyQt5 pymongo
 ```
 
-## Configuración de la Base de Datos
-
-### 1. Instalación de MongoDB
-- Descargar e instalar MongoDB desde: https://www.mongodb.com/try/download/community
-- Iniciar el servicio de MongoDB
-- Por defecto, MongoDB se ejecuta en `localhost:27017`
-
-### 2. Configuración de la Base de Datos
-La aplicación utiliza la base de datos `comerciotech_db` con las siguientes colecciones:
-
-#### Colecciones:
-- **usuarios**: Para autenticación del sistema
-- **clientes**: Información de clientes
-- **productos**: Catálogo de productos
-- **pedidos**: Órdenes de compra
-
-### 3. Importar Datos de Ejemplo
-
-#### Usando MongoDB Compass:
-1. Abrir MongoDB Compass
-2. Conectar a `mongodb://localhost:27017`
-3. Crear la base de datos `comerciotech_db`
-4. Importar los archivos JSON en sus respectivas colecciones:
-   - `usuarios.json` → colección `usuarios`
-   - `clientes.json` → colección `clientes`
-   - `productos.json` → colección `productos`
-   - `pedidos.json` → colección `pedidos`
-
-#### Usando MongoDB Shell:
+### 2. MongoDB
+Asegúrate de que MongoDB esté ejecutándose:
 ```bash
-# Conectar a MongoDB
-mongo
+sudo systemctl start mongod
+```
 
-# Usar la base de datos
-use comerciotech_db
-
-# Importar usuarios
+### 3. Importar Datos
+```bash
 mongoimport --db comerciotech_db --collection usuarios --file usuarios.json --jsonArray
-
-# Importar clientes
 mongoimport --db comerciotech_db --collection clientes --file clientes.json --jsonArray
-
-# Importar productos
 mongoimport --db comerciotech_db --collection productos --file productos.json --jsonArray
-
-# Importar pedidos (después de importar clientes y productos)
-mongoimport --db comerciotech_db --collection pedidos --file pedidos.json --jsonArray
 ```
 
-**Nota Importante**: Para el archivo `pedidos.json`, debes reemplazar los marcadores `<ObjectId_del_cliente_X>` y `<ObjectId_del_producto_X>` con los `_id` reales de los documentos de clientes y productos después de importarlos.
-
-## Estructura del Proyecto
-
-```
-comerciotech_app/
-├── login.ui                 # Interfaz de login (QtDesigner)
-├── main_window.ui          # Interfaz principal (QtDesigner)
-├── login_app.py            # Aplicación de login
-├── main_app.py             # Aplicación principal
-├── mongo_connection.py     # Conexión y operaciones MongoDB
-├── usuarios.json           # Datos de usuarios para login
-├── clientes.json           # Datos de ejemplo de clientes
-├── productos.json          # Datos de ejemplo de productos
-├── pedidos.json            # Datos de ejemplo de pedidos
-└── README.md               # Este archivo
-```
-
-## Uso de la Aplicación
-
-### 1. Ejecutar la Aplicación
+### 4. Ejecutar Aplicación
 ```bash
-cd comerciotech_app
-python login_app.py
+python3 app.py
 ```
 
-### 2. Credenciales de Acceso
-- **Usuario**: admin
-- **Contraseña**: admin123
+## Funcionalidades
 
-O también:
-- **Usuario**: usuario1
-- **Contraseña**: pass123
+### Login
+- Validación de credenciales contra MongoDB
+- Sin mensajes por terminal
+- Transición automática a ventana principal
 
-### 3. Funcionalidades
+### Gestión de Clientes
+- ✅ Agregar nuevos clientes
+- ✅ Editar información de clientes
+- ✅ Eliminar clientes
+- ✅ Visualizar lista de clientes
 
-#### Gestión de Clientes
-- Agregar nuevos clientes
-- Editar información de clientes existentes
-- Eliminar clientes
-- Visualizar lista completa de clientes
+### Gestión de Productos
+- ✅ Agregar nuevos productos
+- ✅ Editar información de productos
+- ✅ Eliminar productos
+- ✅ Visualizar catálogo de productos
 
-#### Gestión de Productos
-- Agregar nuevos productos
-- Editar información de productos
-- Eliminar productos
-- Visualizar catálogo de productos
+### Gestión de Pedidos
+- ✅ Visualizar pedidos existentes
+- ✅ Ver detalles de pedidos
+- ✅ Eliminar pedidos
+- ⚠️ Agregar pedidos (funcionalidad básica)
 
-#### Gestión de Pedidos
-- Visualizar pedidos existentes
-- Ver detalles de pedidos
-- Eliminar pedidos
-- (Funcionalidad de agregar pedidos en desarrollo)
+## Cambios Realizados
 
-## Operaciones CRUD Implementadas
+### Correcciones en el Login
+1. Eliminados todos los `print()` que mostraban mensajes por terminal
+2. Agregada transición automática a ventana principal después del login exitoso
+3. Integración con la nueva clase `MongoConnection`
 
-### Clientes
-- **Create**: Agregar nuevo cliente con información completa
-- **Read**: Listar todos los clientes
-- **Update**: Modificar información de cliente existente
-- **Delete**: Eliminar cliente del sistema
+### Nueva Ventana Principal
+1. Interfaz con pestañas para cada tipo de dato
+2. Tablas con datos cargados desde MongoDB
+3. Botones de acción (Agregar, Editar, Eliminar) para cada registro
+4. Diálogos modales para formularios de entrada
 
-### Productos
-- **Create**: Agregar nuevo producto al catálogo
-- **Read**: Listar todos los productos
-- **Update**: Modificar información de producto
-- **Delete**: Eliminar producto del catálogo
+### Operaciones CRUD Completas
+1. Clase `MongoConnection` con todas las operaciones necesarias
+2. Validación de datos en formularios
+3. Mensajes de confirmación y error
+4. Actualización automática de tablas después de operaciones
 
-### Pedidos
-- **Read**: Listar pedidos con información del cliente
-- **Delete**: Eliminar pedidos
-- (Create y Update en desarrollo)
+## Estructura de la Base de Datos
 
-## Características Técnicas
+### Colecciones
+- `usuarios` - Autenticación del sistema
+- `clientes` - Información de clientes con direcciones
+- `productos` - Catálogo de productos con precios y stock
+- `pedidos` - Órdenes de compra con relaciones a clientes
 
-### Base de Datos MongoDB
-- Uso de colecciones no estructuradas
-- Relaciones mediante ObjectId
-- Agregaciones para consultas complejas
-- Índices automáticos en _id
+### Relaciones
+- Clientes ↔ Pedidos (Uno a muchos)
+- Productos ↔ Pedidos (Muchos a muchos)
 
-### Interfaz Gráfica
-- Desarrollada con PyQt5 y QtDesigner
-- Interfaces responsivas y amigables
-- Diálogos modales para formularios
-- Tablas dinámicas con botones de acción
+## Notas Técnicas
 
-### Seguridad
-- Autenticación de usuarios
-- Validación de datos de entrada
-- Manejo de errores y excepciones
-- Logging de operaciones
+- La aplicación requiere un entorno gráfico para ejecutar PyQt5
+- MongoDB debe estar ejecutándose en localhost:27017
+- Los archivos .ui deben estar en el mismo directorio que los archivos .py
+- La base de datos debe llamarse exactamente `comerciotech_db`
 
 ## Solución de Problemas
 
-### Error de Conexión a MongoDB
-- Verificar que MongoDB esté ejecutándose
-- Comprobar la dirección y puerto (localhost:27017)
-- Verificar permisos de acceso
-
-### Error de Dependencias
+### Error: "No se puede conectar a MongoDB"
 ```bash
-pip install --upgrade PyQt5 pymongo
+sudo systemctl status mongod
+sudo systemctl start mongod
 ```
 
-### Error de Interfaz Gráfica
-- Verificar que los archivos .ui estén en el directorio correcto
-- Comprobar que PyQt5 esté instalado correctamente
+### Error: "ModuleNotFoundError: No module named 'PyQt5'"
+```bash
+pip install PyQt5
+```
 
-## Desarrollo Futuro
+### Error: "qt.qpa.plugin: Could not load the Qt platform plugin"
+Esto indica que no hay un entorno gráfico disponible. La aplicación necesita ejecutarse en un sistema con interfaz gráfica.
 
-### Funcionalidades Pendientes
-- Completar gestión de pedidos (agregar y editar)
-- Reportes y estadísticas
-- Búsqueda y filtros avanzados
-- Exportación de datos
-- Gestión de usuarios y roles
+---
 
-### Mejoras Técnicas
-- Implementar patrones de diseño (MVC)
-- Agregar pruebas unitarias
-- Mejorar manejo de errores
-- Optimizar consultas a la base de datos
-
-## Contacto y Soporte
-
-Para soporte técnico o consultas sobre la aplicación, contactar al equipo de desarrollo de ComercioTech.
+¡La aplicación ComercioTech está lista para usar con todas las funcionalidades CRUD implementadas!
 
